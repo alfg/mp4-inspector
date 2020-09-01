@@ -1,7 +1,7 @@
 <template>
   <!-- http://tholman.com/github-corners/  -->
   <a
-    href="https://github.com/alfg/ffmpeg-commander"
+    href="https://github.com/alfg/mp4-inspector"
     class="github-corner"
     aria-label="View source on GitHub"
   >

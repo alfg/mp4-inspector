@@ -1,11 +1,12 @@
-# mp4-inspector 
+# `MP4 Inspector`
 > A Web-based MP4 File Inspector. Powered by Rust, Vue and Web Assembly! 🦀.
 
 https://alfg.github.io/mp4-inspector/
 
+⚠️ Currently functional, but a work-in-progress! Check back for updates!
+
 ## Development
 `mp4-inspector` is a [Vue.js](https://vuejs.org/) application importing a [Web Assembly](https://webassembly.org/) module built with [Rust](https://www.rust-lang.org) and [mp4rs](https://github.com/alfg/mp4rs) via [wasm-pack](https://rustwasm.github.io/wasm-pack).
-
 
 ### Requirements
 * `rust` - https://www.rust-lang.org/learn/get-started
