@@ -41,7 +41,7 @@ pub fn logger(s: &str) {
 
 #[wasm_bindgen]
 pub fn get_boxes(buf: &[u8]) -> JsValue {
-    log("wasm: parsing");
+    log("wasm: get_boxes");
 
     let c = Cursor::new(buf);
     let len = buf.len() as u64;
@@ -62,7 +62,7 @@ pub fn get_boxes(buf: &[u8]) -> JsValue {
 
 #[wasm_bindgen]
 pub fn get_tracks(buf: &[u8]) -> JsValue {
-    log("wasm: get tracks");
+    log("wasm: get_tracks");
 
     let c = Cursor::new(buf);
     let len = buf.len() as u64;
@@ -84,6 +84,31 @@ pub fn get_tracks(buf: &[u8]) -> JsValue {
         tracks.push(t);
     }
     JsValue::from_serde(&tracks).unwrap()
+}
+
+#[wasm_bindgen]
+pub fn get_media_info(buf: &[u8]) -> JsValue {
+    log("wasm: get media_info");
+
+    let c = Cursor::new(buf);
+    let len = buf.len() as u64;
+    let m = mp4::Mp4Reader::read_header(c, len).unwrap();
+
+    let mut compatible_brands = String::new();
+    for brand in m.compatible_brands().iter() {
+        compatible_brands.push_str(&brand.to_string());
+        compatible_brands.push_str(" ");
+    }
+
+    let media_info = MediaInfo{
+        size: m.size(),
+        major_brand: m.major_brand().to_string(),
+        minor_version: m.minor_version(),
+        compatible_brands: compatible_brands,
+        duration: m.duration().as_millis(),
+        timescale: m.timescale(),
+    };
+    JsValue::from_serde(&media_info).unwrap()
 }
 
 #[derive(Serialize)]
@@ -144,4 +169,14 @@ fn audio_info(track: &Mp4Track) -> Result<String> {
     } else {
         Err(Error::InvalidData("mp4a box not found"))
     }
+}
+
+#[derive(Serialize)]
+pub struct MediaInfo {
+    pub size: u64,
+    pub major_brand: String,
+    pub minor_version: u32,
+    pub compatible_brands: String,
+    pub timescale: u32,
+    pub duration: u128,
 }

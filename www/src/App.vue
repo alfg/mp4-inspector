@@ -1,18 +1,48 @@
 <template>
-  <div id="app" class="container">
-    <h1>MP4 Inspector</h1>
-    <Inspector />
+  <div>
+    <b-navbar type="dark" variant="dark">
+      <b-navbar-nav>
+        <b-nav-item href="#">
+          MP4 Inspector
+        </b-nav-item>
+      </b-navbar-nav>
+    </b-navbar>
+
+    <GitHubCorner />
+
+    <div id="app" class="container">
+      <Inspector />
+    </div>
+
+    <footer class="container mt-4 text-center">
+      <hr />
+      <div class="text-muted">
+        <ul>
+          <li>{{ name }}-{{ version }}</li>
+          <li><a href="https://github.com/alfg/mp4-inspector">GitHub</a></li>
+        </ul>
+      </div>
+    </footer>
   </div>
 </template>
 
 <script>
+import { name, version } from '../package.json';
+import GitHubCorner from './components/GitHubCorner.vue';
 import Inspector from './components/Inspector.vue';
 
 export default {
   name: 'App',
   components: {
     Inspector,
+    GitHubCorner,
   },
+  data() {
+    return {
+      name,
+      version,
+    }
+  }
 }
 </script>
 
@@ -21,8 +51,24 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+label {
+  text-transform: capitalize;
+}
+
+footer ul {
+  display: inline-block;
+  padding-left: 0;
+  text-align: left;
+  width: 100%;
+}
+
+footer ul li {
+  display: inline;
+  margin: 0 6px;
+  list-style: none;
 }
 </style>
