@@ -46,6 +46,8 @@ docker build -t mp4-inspector .
 docker run -it -p 8080:80 --rm mp4-inspector
 ```
 
+http://localhost:8080/mp4-inspector/
+
 ### Resources
 * https://rust-lang.org
 * https://github.com/alfg/mp4rs
