@@ -16,7 +16,8 @@ web-sys = { version="0.3.33", features=["console"]}
 byteorder = "1"
 serde = "^1.0.59"
 serde_derive = "^1.0.59"
-mp4 = "0.5.2"
+mp4 = { git = "https://github.com/alfg/mp4rs" }
+# mp4 = "0.5.2"
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
