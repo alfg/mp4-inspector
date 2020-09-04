@@ -107,6 +107,7 @@ pub fn get_media_info(buf: &[u8]) -> JsValue {
         compatible_brands: compatible_brands,
         duration: m.duration().as_millis(),
         timescale: m.timescale(),
+        fragmented: m.is_fragmented(),
     };
     JsValue::from_serde(&media_info).unwrap()
 }
@@ -143,7 +144,7 @@ fn video_info(track: &Mp4Track) -> Result<String> {
             track.width(),
             track.height(),
             track.bitrate() / 1000,
-            track.frame_rate_f64()
+            track.frame_rate()
         ))
     } else {
         Ok(format!(
@@ -153,7 +154,7 @@ fn video_info(track: &Mp4Track) -> Result<String> {
             track.width(),
             track.height(),
             track.bitrate() / 1000,
-            track.frame_rate_f64()
+            track.frame_rate()
         ))
     }
 }
@@ -191,4 +192,5 @@ pub struct MediaInfo {
     pub compatible_brands: String,
     pub timescale: u32,
     pub duration: u128,
+    pub fragmented: bool,
 }

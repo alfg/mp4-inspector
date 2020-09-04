@@ -70,6 +70,8 @@ export default {
   },
   methods: {
     onFile(event) {
+      this.data = null;
+      this.progress = 0;
       this.showProgress = true;
       const file = event.target.files[0];
       const reader = new FileReader();

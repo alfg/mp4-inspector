@@ -22,6 +22,7 @@ export default {
           compatible_brands: this.info.compatible_brands,
           timescale: this.info.timescale,
           duration: this.info.duration,
+          fragmented: this.info.fragmented,
         },
       ]
     }
