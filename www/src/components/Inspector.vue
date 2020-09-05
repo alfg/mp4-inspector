@@ -73,7 +73,8 @@ export default {
       this.data = null;
       this.progress = 0;
       this.showProgress = true;
-      const file = event.target.files[0];
+
+      const file = event.dataTransfer ? event.dataTransfer.files[0] : event.target.files[0];
       const reader = new FileReader();
 
       // reader.onload = e => this.$emit("load", event.target.result);

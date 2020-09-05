@@ -52,9 +52,71 @@ pub fn get_boxes(buf: &[u8]) -> JsValue {
     boxes.push(build_box(&m.moov));
     boxes.push(build_box(&m.moov.mvhd));
 
+    // trak.
     for track in m.tracks().iter() {
         boxes.push(build_box(&track.trak));
         boxes.push(build_box(&track.trak.tkhd));
+        if let Some(ref edts) = track.trak.edts {
+            boxes.push(build_box(edts));
+            if let Some(ref elst) = edts.elst {
+                boxes.push(build_box(elst));
+            }
+        }
+
+        // trak.mdia
+        let mdia = &track.trak.mdia;
+        boxes.push(build_box(mdia));
+        boxes.push(build_box(&mdia.mdhd));
+        boxes.push(build_box(&mdia.hdlr));
+        boxes.push(build_box(&track.trak.mdia.minf));
+
+        // trak.mdia.minf
+        let minf = &track.trak.mdia.minf;
+        if let Some(ref vmhd) = &minf.vmhd {
+            boxes.push(build_box(vmhd));
+        }
+        if let Some(ref smhd) = &minf.smhd {
+            boxes.push(build_box(smhd));
+        }
+
+        // trak.mdia.minf.stbl
+        let stbl = &track.trak.mdia.minf.stbl;
+        boxes.push(build_box(stbl));
+        boxes.push(build_box(&stbl.stsd));
+        if let Some(ref avc1) = &stbl.stsd.avc1 {
+            boxes.push(build_box(avc1));
+        }
+        if let Some(ref hev1) = &stbl.stsd.hev1 {
+            boxes.push(build_box(hev1));
+        }
+        if let Some(ref mp4a) = &stbl.stsd.mp4a {
+            boxes.push(build_box(mp4a));
+        }
+        boxes.push(build_box(&stbl.stts));
+        if let Some(ref ctts) = &stbl.ctts {
+            boxes.push(build_box(ctts));
+        }
+        if let Some(ref stss) = &stbl.stss {
+            boxes.push(build_box(stss));
+        }
+        boxes.push(build_box(&stbl.stsc));
+        boxes.push(build_box(&stbl.stsz));
+        if let Some(ref stco) = &stbl.stco {
+            boxes.push(build_box(stco));
+        }
+        if let Some(ref co64) = &stbl.co64 {
+            boxes.push(build_box(co64));
+        }
+    }
+
+    // If fragmented, add moof boxes.
+    for moof in m.moofs.iter() {
+        boxes.push(build_box(moof));
+        boxes.push(build_box(&moof.mfhd));
+        for traf in moof.trafs.iter() {
+            boxes.push(build_box(traf));
+            boxes.push(build_box(&traf.tfhd));
+        }
     }
 
     JsValue::from_serde(&boxes).unwrap()
@@ -73,6 +135,7 @@ pub fn get_tracks(buf: &[u8]) -> JsValue {
         let media_info = match track.track_type().unwrap() {
             mp4::TrackType::Video => video_info(track),
             mp4::TrackType::Audio => audio_info(track),
+            mp4::TrackType::Subtitle => subtitle_info(track),
         };
         let t = Track{
             id: track.track_id(),
@@ -162,13 +225,23 @@ fn video_info(track: &Mp4Track) -> Result<String> {
 fn audio_info(track: &Mp4Track) -> Result<String> {
     if let Some(ref mp4a) = track.trak.mdia.minf.stbl.stsd.mp4a {
         if mp4a.esds.is_some() {
+            let profile = match track.audio_profile() {
+                Ok(val) => val.to_string(),
+                _ => "-".to_string(),
+            };
+
+            let channel_config = match track.channel_config() {
+                Ok(val) => val.to_string(),
+                _ => "-".to_string(),
+            };
+
             Ok(format!(
                 "{} ({}) ({:?}), {} Hz, {}, {} kb/s",
                 track.media_type()?,
-                track.audio_profile()?,
+                profile,
                 track.box_type()?,
                 track.sample_freq_index()?.freq(),
-                track.channel_config()?,
+                channel_config,
                 track.bitrate() / 1000
             ))
         } else {
@@ -181,6 +254,18 @@ fn audio_info(track: &Mp4Track) -> Result<String> {
         }
     } else {
         Err(Error::InvalidData("mp4a box not found"))
+    }
+}
+
+fn subtitle_info(track: &Mp4Track) -> Result<String> {
+    if track.trak.mdia.minf.stbl.stsd.tx3g.is_some() {
+        Ok(format!(
+            "{} ({:?})",
+            track.media_type()?,
+            track.box_type()?,
+        ))
+    } else {
+        Err(Error::InvalidData("tx3g box not found"))
     }
 }
 
