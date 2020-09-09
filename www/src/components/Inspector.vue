@@ -28,9 +28,9 @@
               </div>
             </b-tab>
 
-            <b-tab title="Boxes" class="mt-2">
-              <div v-if="data">
-                <Boxes :boxes="boxes" />
+            <b-tab title="Box Tree" class="mt-2">
+              <div class="tree-view" v-if="data">
+                <BoxTree :data="boxes" />
               </div>
             </b-tab>
           </b-tabs>
@@ -41,13 +41,13 @@
 
 <script>
 import Overview from './Overview.vue';
-import Boxes from './Boxes.vue';
+import BoxTree from './BoxTree.vue';
 
 export default {
   name: 'Inspector',
   components: {
     Overview,
-    Boxes,
+    BoxTree,
   },
   data() {
     return {
@@ -65,7 +65,15 @@ export default {
       return this.$mp4.get_tracks(this.data);
     },
     boxes() {
-      return this.$mp4.get_boxes(this.data);
+      const boxes = this.$mp4.get_boxes(this.data);
+      const data = [];
+      boxes.forEach(o => {
+        const obj = {
+          [o.name]: JSON.parse(o.json),
+        };
+        data.push(obj);
+      });
+      return data;
     },
   },
   methods: {
@@ -93,3 +101,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.tree-view {
+  overflow: auto;
+  height: 60vh;
+}
+</style>
