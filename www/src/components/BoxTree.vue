@@ -1,14 +1,13 @@
 <template>
-  <div>
+  <div class="box-tree">
     <ul>
       <li v-for="(o, i) in parsedData" :key="i">
-        {{ o.name }}
-
+        <span class="key">{{ o.name.replace('value', '') }}</span>
+        <code class="value">{{ parsedValue(o.data) }}</code>
         <template>
           <BoxTree :data="o.data" />
         </template>
       </li>
-
     </ul>
   </div>
 </template>
@@ -34,7 +33,7 @@ export default {
           boxes.push(obj);
         });
       } else if (typeof this.data !== 'object') {
-        // console.log('not object', this.data);
+        return; // skip.
       } else {
         Object.keys(this.data).forEach(o => {
           const obj = {
@@ -48,23 +47,18 @@ export default {
     }
   },
   methods: {
+    parsedValue(v) {
+      if (typeof v === 'number' || typeof v === 'string') {
+        return v;
+      }
+      return;
+    },
   }
 }
 </script>
 
 <style scoped>
-.bold {
+.key {
   font-weight: bold;
-}
-ul {
-  /* padding-left: 1em; */
-  /* line-height: 1.5em; */
-}
-li {
-  cursor: pointer;
-}
-
-li:hover {
-  /* font-weight: bold; */
 }
 </style>
