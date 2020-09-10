@@ -16,31 +16,19 @@
 export default {
   name: 'BoxTree',
   props: ['data'],
-  data() {
-    return {
-    };
-  },
   computed: {
     parsedData() {
       const boxes = [];
 
       if (Array.isArray(this.data)) {
-        this.data.forEach(o => {
-          const obj = {
-            name: Object.keys(o)[0],
-            data: o[Object.keys(o)[0]],
-          };
-          boxes.push(obj);
+        this.data.forEach((o) => {
+          Object.keys(o).forEach(p => {
+            boxes.push({ name: p, data: o[p] });
+          });
         });
-      } else if (typeof this.data !== 'object') {
-        return; // skip.
-      } else {
+      } else if (typeof this.data === 'object') {
         Object.keys(this.data).forEach(o => {
-          const obj = {
-            name: o,
-            data: this.data[o],
-          };
-          boxes.push(obj);
+          boxes.push({ name: o, data: this.data[o] });
         });
       }
       return boxes;
@@ -60,5 +48,8 @@ export default {
 <style scoped>
 .key {
   font-weight: bold;
+}
+.value {
+  padding-left: 4px;
 }
 </style>
