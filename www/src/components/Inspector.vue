@@ -33,6 +33,12 @@
                 <BoxTree :data="boxes" />
               </div>
             </b-tab>
+
+            <b-tab title="Samples" class="mt-2">
+              <div v-if="data">
+                <Samples :samples="samples" />
+              </div>
+            </b-tab>
           </b-tabs>
           <hr />
         </div>
@@ -42,12 +48,14 @@
 <script>
 import Overview from './Overview.vue';
 import BoxTree from './BoxTree.vue';
+import Samples from './Samples.vue';
 
 export default {
   name: 'Inspector',
   components: {
     Overview,
     BoxTree,
+    Samples,
   },
   data() {
     return {
@@ -74,6 +82,9 @@ export default {
         data.push(obj);
       });
       return data;
+    },
+    samples() {
+      return this.$mp4.get_samples(this.data);
     },
   },
   methods: {

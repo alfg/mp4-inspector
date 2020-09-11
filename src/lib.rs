@@ -88,7 +88,7 @@ pub fn get_tracks(buf: &[u8]) -> JsValue {
 
 #[wasm_bindgen]
 pub fn get_media_info(buf: &[u8]) -> JsValue {
-    log("wasm: get media_info");
+    log("wasm: get_media_info");
 
     let c = Cursor::new(buf);
     let len = buf.len() as u64;
@@ -110,6 +110,67 @@ pub fn get_media_info(buf: &[u8]) -> JsValue {
         fragmented: m.is_fragmented(),
     };
     JsValue::from_serde(&media_info).unwrap()
+}
+
+#[wasm_bindgen]
+pub fn get_samples(buf: &[u8]) -> JsValue {
+    log("wasm: get_samples");
+
+    let c = Cursor::new(buf);
+    let len = buf.len() as u64;
+    let mut m = mp4::Mp4Reader::read_header(c, len).unwrap();
+
+    let mut resp = Vec::new();
+    
+    for track_idx in 0..m.tracks().len() {
+        let track_id = track_idx as u32 + 1;
+        let sample_count = m.sample_count(track_id).unwrap();
+
+        let track_type = m.tracks()[track_idx].track_type().unwrap();
+        let box_type = m.tracks()[track_idx].box_type().unwrap();
+
+
+        let mut samples = Vec::new();
+
+        for sample_idx in 0..sample_count {
+            let sample_id = sample_idx + 1;
+            let sample = m.read_sample(track_id, sample_id);
+
+
+            if let Some(ref samp) = sample.unwrap() {
+                let s = Sample{
+                    start_time: samp.start_time,
+                    duration: samp.duration,
+                    rendering_offset: samp.rendering_offset,
+                    is_sync: samp.is_sync,
+                };
+                samples.push(s);
+            }
+        }
+        resp.push(Samples{
+            track_id,
+            track_type: track_type.to_string(),
+            box_type: box_type.to_string(),
+            samples
+        });
+    }
+    JsValue::from_serde(&resp).unwrap()
+}
+
+#[derive(Serialize)]
+pub struct Samples {
+    track_id: u32,
+    track_type: String,
+    box_type: String,
+    samples: Vec<Sample>,
+}
+
+#[derive(Serialize)]
+pub struct Sample {
+    pub start_time: u64,
+    pub duration: u32,
+    pub rendering_offset: i32,
+    pub is_sync: bool,
 }
 
 #[derive(Serialize)]
