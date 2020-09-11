@@ -1,22 +1,20 @@
 <template>
   <div>
     <b-navbar type="dark" variant="dark">
-      <b-navbar-nav>
-        <b-nav-item href="#">
-          MP4 Inspector
-        </b-nav-item>
-      </b-navbar-nav>
+      <div class="container">
+        <b-navbar-nav>
+          <b-nav-item href="#">
+            MP4 Inspector
+          </b-nav-item>
+        </b-navbar-nav>
+      </div>
     </b-navbar>
 
     <GitHubCorner />
 
     <div id="app" class="container">
-      <div class="mt-2">
-        <b-alert
-          variant="warning"
-          show
-        >⚠️ Currently a work in progress. Check back for updates.</b-alert>
-      </div>
+      <h3>MP4/ISOBMFF Metadata and Box Structure Viewer</h3>
+      <hr />
       <Inspector />
     </div>
 
@@ -25,7 +23,8 @@
       <div class="text-muted">
         <ul>
           <li>{{ name }}-{{ version }}</li>
-          <li><a href="https://github.com/alfg/mp4-inspector">GitHub</a></li>
+          <li><a href="https://github.com/alfg/mp4-inspector">Source</a></li>
+          <li><a href="https://github.com/alfg/mp4-inspector/issues">Report Bugs</a></li>
         </ul>
       </div>
     </footer>
@@ -58,7 +57,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 40px;
 }
 
 footer ul {

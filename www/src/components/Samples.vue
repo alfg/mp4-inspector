@@ -10,9 +10,8 @@
       </b-col>
     </b-row>
 
-    <hr />
-
     <b-table
+      class="mt-4"
       striped hover
       :items="samples[selectedTrack - 1].samples"
       :per-page="perPage"
