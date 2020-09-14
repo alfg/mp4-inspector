@@ -1,6 +1,6 @@
 [package]
 name = "mp4-inspector"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["Alfred Gutierrez <alf.g.jr@gmail.com>"]
 edition = "2018"
 

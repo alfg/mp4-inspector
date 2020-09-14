@@ -137,12 +137,14 @@ pub fn get_samples(buf: &[u8]) -> JsValue {
             let sample = m.read_sample(track_id, sample_id);
 
 
-            if let Some(ref samp) = sample.unwrap() {
+            if let Some(ref sample) = sample.unwrap() {
                 let s = Sample{
-                    start_time: samp.start_time,
-                    duration: samp.duration,
-                    rendering_offset: samp.rendering_offset,
-                    is_sync: samp.is_sync,
+                    sample_id: sample_id,
+                    start_time: sample.start_time,
+                    duration: sample.duration,
+                    rendering_offset: sample.rendering_offset,
+                    size: sample.bytes.len() as u32,
+                    is_sync: sample.is_sync,
                 };
                 samples.push(s);
             }
@@ -167,9 +169,11 @@ pub struct Samples {
 
 #[derive(Serialize)]
 pub struct Sample {
+    pub sample_id: u32,
     pub start_time: u64,
     pub duration: u32,
     pub rendering_offset: i32,
+    pub size: u32,
     pub is_sync: bool,
 }
 
