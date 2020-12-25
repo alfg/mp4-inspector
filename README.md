@@ -3,8 +3,6 @@
 
 https://alfg.github.io/mp4-inspector/
 
-⚠️ Currently functional, but a work-in-progress! Check back for updates!
-
 ## Development
 `mp4-inspector` is a [Vue.js](https://vuejs.org/) application importing a [Web Assembly](https://webassembly.org/) module built with [Rust](https://www.rust-lang.org) and [mp4rs](https://github.com/alfg/mp4rs) via [wasm-pack](https://rustwasm.github.io/wasm-pack).
 
