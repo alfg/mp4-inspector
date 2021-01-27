@@ -4,7 +4,7 @@
 https://alfg.github.io/mp4-inspector/
 
 ## Development
-`mp4-inspector` is a [Vue.js](https://vuejs.org/) application importing a [Web Assembly](https://webassembly.org/) module built with [Rust](https://www.rust-lang.org) and [mp4rs](https://github.com/alfg/mp4rs) via [wasm-pack](https://rustwasm.github.io/wasm-pack).
+`mp4-inspector` is a [Vue.js](https://vuejs.org/) application importing a [Web Assembly](https://webassembly.org/) module built with [Rust](https://www.rust-lang.org) and [mp4-rust](https://github.com/alfg/mp4-rust) via [wasm-pack](https://rustwasm.github.io/wasm-pack).
 
 ### Requirements
 * `rust` - https://www.rust-lang.org/learn/get-started
@@ -46,9 +46,14 @@ docker run -it -p 8080:80 --rm mp4-inspector
 
 http://localhost:8080/mp4-inspector/
 
+### TODO
+* Examples
+* Load by URL
+* Tests
+
 ### Resources
 * https://rust-lang.org
-* https://github.com/alfg/mp4rs
+* https://github.com/alfg/mp4-rust
 * https://rustwasm.github.io/wasm-pack
 * https://vuejs.org
 * https://bootstrap-vue.org
