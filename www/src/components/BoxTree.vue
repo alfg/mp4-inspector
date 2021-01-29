@@ -20,13 +20,13 @@ export default {
     parsedData() {
       const boxes = [];
 
-      if (Array.isArray(this.data)) {
+      if (this.data && Array.isArray(this.data)) {
         this.data.forEach((o) => {
           Object.keys(o).forEach(p => {
             boxes.push({ name: p, data: o[p] });
           });
         });
-      } else if (typeof this.data === 'object') {
+      } else if (this.data && typeof this.data === 'object') {
         Object.keys(this.data).forEach(o => {
           boxes.push({ name: o, data: this.data[o] });
         });
@@ -38,6 +38,12 @@ export default {
     parsedValue(v) {
       if (typeof v === 'number' || typeof v === 'string') {
         return v;
+      } else if (Array.isArray(v) && v.length === 4) { // FourCC value.
+        let result = "";
+        for (var i = 0; i < v.length; i++) {
+          result += String.fromCharCode(v[i]);
+        }
+        return result;
       }
       return;
     },
