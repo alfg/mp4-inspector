@@ -1,7 +1,6 @@
 use mp4::{Mp4Track, Mp4Box, Result, Error};
 use std::io::{Cursor};
 use wasm_bindgen::prelude::*;
-use mp4;
 
 #[macro_use]
 extern crate serde_derive;
@@ -64,11 +63,11 @@ pub fn get_tracks(buf: &[u8]) -> JsValue {
     log("wasm: get_tracks");
 
     let c = Cursor::new(buf);
-    let len = buf.len() as u64;
-    let m = mp4::Mp4Reader::read_header(c, len).unwrap();
+    let size  = buf.len() as u64;
+    let mp4 = mp4::Mp4Reader::read_header(c, size).unwrap();
 
     let mut tracks = Vec::new();
-    for track in m.tracks().iter() {
+    for track in mp4.tracks().values() {
         let media_info = match track.track_type().unwrap() {
             mp4::TrackType::Video => video_info(track),
             mp4::TrackType::Audio => audio_info(track),
@@ -118,24 +117,22 @@ pub fn get_samples(buf: &[u8]) -> JsValue {
 
     let c = Cursor::new(buf);
     let len = buf.len() as u64;
-    let mut m = mp4::Mp4Reader::read_header(c, len).unwrap();
+    let mut mp4 = mp4::Mp4Reader::read_header(c, len).unwrap();
 
     let mut resp = Vec::new();
     
-    for track_idx in 0..m.tracks().len() {
+    for track_idx in 0..mp4.tracks().len() {
         let track_id = track_idx as u32 + 1;
-        let sample_count = m.sample_count(track_id).unwrap();
+        let sample_count = mp4.sample_count(track_id).unwrap();
 
-        let track_type = m.tracks()[track_idx].track_type().unwrap();
-        let box_type = m.tracks()[track_idx].box_type().unwrap();
-
+        let track_type = mp4.tracks()[&track_id].track_type().unwrap();
+        let box_type = mp4.tracks()[&track_id].box_type().unwrap();
 
         let mut samples = Vec::new();
 
         for sample_idx in 0..sample_count {
             let sample_id = sample_idx + 1;
-            let sample = m.read_sample(track_id, sample_id);
-
+            let sample = mp4.read_sample(track_id, sample_id);
 
             if let Some(ref sample) = sample.unwrap() {
                 let s = Sample{
