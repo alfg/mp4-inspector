@@ -1,6 +1,6 @@
 {
   "name": "mp4-inspector-viewer",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -8,23 +8,23 @@
     "deploy": "npm run build && gh-pages -d dist"
   },
   "dependencies": {
-    "bootstrap": "^4.6.0",
-    "bootstrap-vue": "^2.21.2",
-    "core-js": "^3.9.1",
-    "gh-pages": "^3.1.0",
+    "bootstrap": "^4.6.1",
+    "bootstrap-vue": "^2.22.0",
+    "core-js": "^3.22.7",
+    "gh-pages": "^3.2.3",
     "mp4-inspector": "file:../pkg",
-    "vue": "^2.6.12",
+    "vue": "^2.6.14",
     "wasm-loader": "^1.3.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^4.5.12",
-    "@vue/cli-plugin-eslint": "^4.5.12",
-    "@vue/cli-service": "^4.5.12",
-    "@wasm-tool/wasm-pack-plugin": "^1.3.3",
+    "@vue/cli-plugin-babel": "^4.5.17",
+    "@vue/cli-plugin-eslint": "^4.5.17",
+    "@vue/cli-service": "^4.5.17",
+    "@wasm-tool/wasm-pack-plugin": "^1.6.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {
     "root": true,
