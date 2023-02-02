@@ -1,6 +1,6 @@
 [package]
 name = "mp4-inspector"
-version = "0.6.0"
+version = "0.7.0"
 authors = ["Alfred Gutierrez <alf.g.jr@gmail.com>"]
 edition = "2018"
 
@@ -16,8 +16,8 @@ web-sys = { version="0.3.34", features=["console"]}
 byteorder = "1.3.4"
 serde = "^1.0.115"
 serde_derive = "^1.0.115"
-mp4 = { git = "https://github.com/alfg/mp4-rust", branch = "master" }
-# mp4 = "0.10.0"
+# mp4 = { git = "https://github.com/alfg/mp4-rust", branch = "master" }
+mp4 = "0.13.0"
 
 # The `console_error_panic_hook` crate provides better debugging of panics by
 # logging them with `console.error`. This is great for development, but requires
