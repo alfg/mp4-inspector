@@ -3,6 +3,8 @@
 
 https://alfg.github.io/mp4-inspector/
 
+> 🎉 Introducing [Video Commander](https://video-commander.com) — a new desktop video encoding tool. Check it out!
+
 ## Development
 `mp4-inspector` is a [Vue.js](https://vuejs.org/) application importing a [Web Assembly](https://webassembly.org/) module built with [Rust](https://www.rust-lang.org) and [mp4-rust](https://github.com/alfg/mp4-rust) via [wasm-pack](https://rustwasm.github.io/wasm-pack).
 

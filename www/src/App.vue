@@ -12,6 +12,16 @@
 
     <GitHubCorner />
 
+    <b-alert
+      class="banner text-center mb-0"
+      variant="info"
+      dismissible
+      :show="showBanner"
+      @dismissed="dismissBanner"
+    >
+      🎉 Introducing <strong><a href="https://video-commander.com" target="_blank" rel="noopener noreferrer">video-commander.com</a></strong> — a new desktop video encoding tool. Check it out!
+    </b-alert>
+
     <div id="app" class="container">
       <h3>MP4/ISOBMFF Metadata and Box Structure Viewer</h3>
       <hr />
@@ -46,8 +56,15 @@ export default {
     return {
       name,
       version,
+      showBanner: localStorage.getItem('bannerDismissed') !== 'true',
     }
-  }
+  },
+  methods: {
+    dismissBanner() {
+      this.showBanner = false;
+      localStorage.setItem('bannerDismissed', 'true');
+    },
+  },
 }
 </script>
 
